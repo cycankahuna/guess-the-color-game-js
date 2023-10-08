@@ -1,5 +1,5 @@
 const colorCodeContainer = document.getElementById("color-code");
-const optionContainer = document.getElementById("option-conatiner");
+const optionContainer = document.getElementById("option-container");
 let randomColor = null;
 
 function generateRandomNumber(min, max) {
@@ -13,15 +13,27 @@ function generateRandomColorRGB() {
   return `rgb(${red}, ${green}, ${blue})`;
 }
 
-function startGame() {
-  let randomColor = generateRandomColorRGB();
-  colorCodeContainer.innerText = randomColor;
+function validateResult(el) {
+  const selectedColour = el.target.style.backgroundColor;
 
-  for (let i = 0; (i = 6); i++) {
-    const div = document.createElement("div");
-    div.style.background = generateRandomColorRGB();
-    optionContainer.append(div);
-  }
+  console.log(selectedColour === randomColor);
 }
 
+function startGame() {
+  randomColor = generateRandomColorRGB();
+
+  colorCodeContainer.innerText = randomColor;
+
+  const ansIndex = generateRandomNumber(0, 5);
+
+  for (let i = 0; i < 6; i++) {
+    const div = document.createElement("div");
+    div.addEventListener("click", validateResult);
+    div.style.backgroundColor =
+      i === ansIndex ? randomColor : generateRandomColorRGB();
+    optionContainer.append(div);
+  }
+
+  return randomColor;
+}
 window.addEventListener("load", startGame);
